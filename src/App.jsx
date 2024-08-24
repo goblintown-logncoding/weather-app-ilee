@@ -8,13 +8,17 @@ function App() {
   const [textFieldState, setTextFieldState] = useState();
 
   useEffect(() => {
-    fetch("https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=155b2ed5bf7acdf91c902ae7ee3428ad&units=metric")
+    fetchWeather("Seoul");
+  }, []);
+
+  const fetchWeather = (city) => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=155b2ed5bf7acdf91c902ae7ee3428ad&units=metric`)
       .then((data) => data.json())
       .then((data) => {
         setState(data);
         console.log(data);
       });
-  }, []);
+  }
 
   return (
     <Container maxWidth="xs">
@@ -48,8 +52,12 @@ function App() {
             justifyContent="center"
             marginTop="20px"
           >
-            <TextField />
-            <Button>Enter</Button>
+            <TextField onChange={(e) => {setTextFieldState(e.target.value)}} />
+            <Button
+              onClick={() => fetchWeather(textFieldState)}
+            >
+              Enter
+            </Button>
           </Stack>
         </Box>
       ) : (
